@@ -1,4 +1,17 @@
-import {atom, atomFamily, selectorFamily} from 'recoil'
+import {atom, atomFamily, selectorFamily, useSetRecoilState} from 'recoil'
+
+export const elementsState = atom<number[]>({
+    key: 'elements',
+    default: [],
+})
+
+export const useAddElement = () => {
+    const setElements = useSetRecoilState(elementsState)
+
+    return () => {
+        setElements((elements) => [...elements, elements.length])
+    }
+}
 
 const getCenteredCoordinates = (width: number, height: number) => {
     return {
