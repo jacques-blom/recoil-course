@@ -3,7 +3,7 @@ import {Box, Flex, Link, Text} from '@chakra-ui/react'
 export const PageContainer: React.FC<{onClick: () => void}> = ({onClick, children}) => {
     return (
         <Flex direction="column" width="100vw" height="100vh" onClick={onClick}>
-            <Box padding={3} textAlign="center" backgroundColor="blue.100">
+            <Box padding={3} textAlign="center" backgroundColor="yellow.100">
                 <Text>This is a proof of concept for my upcoming free Recoil course.</Text>
                 <Text>
                     Sign up for it now at 👉{' '}
