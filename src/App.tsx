@@ -1,6 +1,4 @@
-import {Box, Icon, IconButton} from '@chakra-ui/react'
-import {Square} from 'react-feather'
-import {atom, useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil'
+import {useRecoilValue, useSetRecoilState} from 'recoil'
 import {PageContainer} from './PageContainer'
 import {Rectangle} from './Rectangle'
 import {elementsState, selectedElementState} from './state'
