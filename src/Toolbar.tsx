@@ -1,12 +1,13 @@
-import {Box, Icon, IconButton} from '@chakra-ui/react'
-import {Square} from 'react-feather'
+import {Icon, IconButton, VStack} from '@chakra-ui/react'
+import {Folder, Save, Square} from 'react-feather'
+import {filePersist} from './FilePersist'
 import {useAddElement} from './state'
 
 export const Toolbar = () => {
     const addElement = useAddElement()
 
     return (
-        <Box
+        <VStack
             position="absolute"
             top="20px"
             left="20px"
@@ -14,12 +15,23 @@ export const Toolbar = () => {
             padding={2}
             boxShadow="md"
             borderRadius="md"
+            spacing={2}
         >
             <IconButton
                 onClick={() => addElement()}
                 aria-label="Add rectangle"
                 icon={<Icon style={{width: 24, height: 24}} as={Square} />}
             />
-        </Box>
+            <IconButton
+                onClick={() => filePersist.openFile()}
+                aria-label="Open drawing"
+                icon={<Icon style={{width: 24, height: 24}} as={Folder} />}
+            />
+            <IconButton
+                onClick={() => filePersist.saveFile()}
+                aria-label="Save drawing"
+                icon={<Icon style={{width: 24, height: 24}} as={Save} />}
+            />
+        </VStack>
     )
 }

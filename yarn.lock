@@ -3500,6 +3500,11 @@ brorand@^1.0.1:
   resolved "https://registry.yarnpkg.com/brorand/-/brorand-1.1.0.tgz#12c25efe40a45e3c323eb8675a0a0ce57b22371f"
   integrity sha1-EsJe/kCkXjwyPrhnWgoM5XsiNx8=
 
+browser-nativefs@^0.12.0:
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/browser-nativefs/-/browser-nativefs-0.12.0.tgz#4e2a5fd5ee0ebe5b988166e26fc41fd356927091"
+  integrity sha512-ZCHJcQI6bBm9YjB+6wMT1nWg+/mnWnz7r3gJ8sx7RjgLtWROFq+BuD12cAncD6y45MIbUqFM8eMKXoHXOxSFxA==
+
 browser-process-hrtime@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/browser-process-hrtime/-/browser-process-hrtime-1.0.0.tgz#3c9b4b7d782c8121e56f10106d84c0d0ffc94626"
@@ -8091,6 +8096,11 @@ nan@^2.12.1:
   version "2.14.2"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.14.2.tgz#f5376400695168f4cc694ac9393d0c9585eeea19"
   integrity sha512-M2ufzIiINKCuDfBSAUr1vWQ+vuVcA9kqx8JJUsbQi6yf1uGRyb7HfpdfUr5qLXf3B/t8dPvcjhKMmlfnP47EzQ==
+
+nanoevents@^5.1.10:
+  version "5.1.10"
+  resolved "https://registry.yarnpkg.com/nanoevents/-/nanoevents-5.1.10.tgz#9165199eed228c4787086dd1ea579b64257b8f8e"
+  integrity sha512-QOE78g63vQ7V1JzhOLP8UNlaLOF/llDtfUhCj9GlbhQQc0YdPi5GNJKZdeWE0fvDtGF39un6uSf7RObeBm0eAg==
 
 nanoid@^3.1.18:
   version "3.1.18"

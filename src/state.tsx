@@ -1,8 +1,10 @@
 import {atom, atomFamily, selectorFamily, useSetRecoilState} from 'recoil'
+import {persist} from './FilePersist'
 
 export const elementsState = atom<number[]>({
     key: 'elements',
     default: [],
+    effects_UNSTABLE: [persist],
 })
 
 export const useAddElement = () => {
@@ -26,6 +28,7 @@ export const elementState = atomFamily({
         const {top, left} = getCenteredCoordinates(100, 100)
         return {top, left, width: 100, height: 100}
     },
+    effects_UNSTABLE: [persist],
 })
 
 export const selectedElementState = atom<number | null>({
