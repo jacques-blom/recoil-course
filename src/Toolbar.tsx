@@ -1,5 +1,5 @@
 import {Icon, IconButton, VStack} from '@chakra-ui/react'
-import {Folder, Save, Square} from 'react-feather'
+import {Folder, GitHub, Save, Square} from 'react-feather'
 import {filePersist} from './FilePersist'
 import {useAddElement} from './state'
 
@@ -31,6 +31,12 @@ export const Toolbar = () => {
                 onClick={() => filePersist.saveFile()}
                 aria-label="Save drawing"
                 icon={<Icon style={{width: 24, height: 24}} as={Save} />}
+            />
+            <IconButton
+                as="a"
+                aria-label="View on GitHub"
+                icon={<Icon style={{width: 24, height: 24}} as={GitHub} />}
+                href="https://github.com/jacques-blom/recoil-course"
             />
         </VStack>
     )
