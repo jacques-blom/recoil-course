@@ -1,19 +1,16 @@
-import {useRecoilValue, useSetRecoilState} from 'recoil'
 import {PageContainer} from './PageContainer'
-import {Rectangle} from './Rectangle'
-import {elementsState, selectedElementState} from './state'
+import {Rectangle} from './Rectangle/Rectangle'
 import {Toolbar} from './Toolbar'
 
 function App() {
-    const elements = useRecoilValue(elementsState)
-    const setSelectedElement = useSetRecoilState(selectedElementState)
-
     return (
-        <PageContainer onClick={() => setSelectedElement(null)}>
+        <PageContainer
+            onClick={() => {
+                console.log('Deselect all elements!')
+            }}
+        >
             <Toolbar />
-            {elements.map((id) => (
-                <Rectangle id={id} key={id} />
-            ))}
+            <Rectangle />
         </PageContainer>
     )
 }

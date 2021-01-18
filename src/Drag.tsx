@@ -1,18 +1,19 @@
 import {DraggableCore} from 'react-draggable'
-import {useSetRecoilState} from 'recoil'
-import {elementState} from './state'
+import {ElementStyle} from './Rectangle/Rectangle'
 
-export const Drag: React.FC<{id: number}> = ({id, children}) => {
-    const setRectangle = useSetRecoilState(elementState(id))
+type DragProps = {
+    position: ElementStyle['position']
+    onDrag: (position: ElementStyle['position']) => void
+}
 
+export const Drag: React.FC<DragProps> = ({position, onDrag, children}) => {
     return (
         <DraggableCore
             onDrag={(e: any) => {
-                setRectangle((rectangle) => ({
-                    ...rectangle,
-                    left: e.movementX + rectangle.left,
-                    top: e.movementY + rectangle.top,
-                }))
+                onDrag({
+                    left: e.movementX + position.left,
+                    top: e.movementY + position.top,
+                })
             }}
         >
             {children}
