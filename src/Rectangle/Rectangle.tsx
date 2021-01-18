@@ -10,7 +10,7 @@ export type ElementStyle = {
 export const Rectangle = () => {
     const [element] = useState({
         style: {
-            position: {top: 0, left: 0},
+            position: {top: 100, left: 100},
             size: {width: 100, height: 100},
         },
     })
