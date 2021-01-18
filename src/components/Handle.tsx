@@ -1,6 +1,6 @@
 import {Box} from '@chakra-ui/react'
 import {ResizeHandle} from 'react-resizable'
-import {getBorderColor} from './util'
+import {getBorderColor} from '../util'
 
 type Position = {
     top?: number | string

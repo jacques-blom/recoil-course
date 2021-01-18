@@ -1,5 +1,5 @@
 import {Box} from '@chakra-ui/react'
-import {getBorderColor} from '../util'
+import {getBorderColor} from '../../util'
 
 export const RectangleInner = ({selected}: {selected: boolean}) => {
     return (
