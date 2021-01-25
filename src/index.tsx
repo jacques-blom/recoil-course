@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
-import App from './App'
+import Canvas from './Canvas'
 import {ChakraProvider} from '@chakra-ui/react'
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 
@@ -11,7 +11,7 @@ ReactDOM.render(
             <Router>
                 <Switch>
                     <Route>
-                        <App />
+                        <Canvas />
                     </Route>
                 </Switch>
             </Router>

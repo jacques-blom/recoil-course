@@ -2,7 +2,7 @@ import {PageContainer} from './PageContainer'
 import {Rectangle} from './components/Rectangle/Rectangle'
 import {Toolbar} from './Toolbar'
 
-function App() {
+function Canvas() {
     return (
         <PageContainer
             onClick={() => {
@@ -15,4 +15,4 @@ function App() {
     )
 }
 
-export default App
+export default Canvas
