@@ -5,6 +5,7 @@ import Canvas from './Canvas'
 import {ChakraProvider} from '@chakra-ui/react'
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import {RecoilRoot} from 'recoil'
+import {Atoms} from './examples/Atoms'
 
 ReactDOM.render(
     <React.StrictMode>
@@ -12,6 +13,9 @@ ReactDOM.render(
             <ChakraProvider>
                 <Router>
                     <Switch>
+                        <Route path="/examples/atoms">
+                            <Atoms />
+                        </Route>
                         <Route>
                             <Canvas />
                         </Route>
