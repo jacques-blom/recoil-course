@@ -4,26 +4,20 @@ import _ from 'lodash'
 import {selectorFamily, useRecoilState, useRecoilValue} from 'recoil'
 import {elementState, selectedElementState} from './components/Rectangle/Rectangle'
 
-const editProperty = selectorFamily<number | null, string>({
+const editProperty = selectorFamily<number, {path: string; id: number}>({
     key: 'editProperty',
 
-    get: (path) => ({get}) => {
-        const selectedElement = get(selectedElementState)
-        if (selectedElement == null) return null
-
-        const element = get(elementState(selectedElement))
+    get: ({path, id}) => ({get}) => {
+        const element = get(elementState(id))
         return _.get(element, path)
     },
 
-    set: (path) => ({get, set}, newValue) => {
-        const selectedElement = get(selectedElementState)
-        if (selectedElement == null) return
-
-        const element = get(elementState(selectedElement))
+    set: ({path, id}) => ({get, set}, newValue) => {
+        const element = get(elementState(id))
         const newElement = produce(element, (draft) => {
             _.set(draft, path, newValue)
         })
-        set(elementState(selectedElement), newElement)
+        set(elementState(id), newElement)
     },
 })
 
@@ -34,12 +28,12 @@ export const EditProperties = () => {
     return (
         <Card>
             <Section heading="Position">
-                <Property label="Top" property="style.position.top" />
-                <Property label="Left" property="style.position.left" />
+                <Property label="Top" path="style.position.top" id={selectedElement} />
+                <Property label="Left" path="style.position.left" id={selectedElement} />
             </Section>
             <Section heading="Size">
-                <Property label="Width" property="style.size.width" />
-                <Property label="Height" property="style.size.height" />
+                <Property label="Width" path="style.size.width" id={selectedElement} />
+                <Property label="Height" path="style.size.height" id={selectedElement} />
             </Section>
         </Card>
     )
@@ -54,9 +48,8 @@ const Section: React.FC<{heading: string}> = ({heading, children}) => {
     )
 }
 
-const Property = ({label, property}: {label: string; property: string}) => {
-    const [value, setValue] = useRecoilState(editProperty(property))
-    if (value == null) return null
+const Property = ({label, path, id}: {label: string; path: string; id: number}) => {
+    const [value, setValue] = useRecoilState(editProperty({path, id}))
 
     return (
         <div>
