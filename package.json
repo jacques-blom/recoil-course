@@ -23,6 +23,7 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-draggable": "^4.4.3",
+    "react-error-boundary": "^3.1.1",
     "react-feather": "^2.0.9",
     "react-resizable": "^1.11.0",
     "react-router-dom": "^5.2.0",
