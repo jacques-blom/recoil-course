@@ -4,6 +4,7 @@ import {Select} from '@chakra-ui/select'
 import {Suspense, useState} from 'react'
 import {ErrorBoundary, FallbackProps} from 'react-error-boundary'
 import {selectorFamily, useRecoilValue} from 'recoil'
+import {getWeather} from './fakeAPI'
 
 const userState = selectorFamily({
     key: 'user',
@@ -14,8 +15,18 @@ const userState = selectorFamily({
     },
 })
 
+const weatherState = selectorFamily({
+    key: 'weather',
+    get: (userId: number) => ({get}) => {
+        const user = get(userState(userId))
+        return getWeather(user.address.city)
+    },
+})
+
 const UserData = ({userId}: {userId: number}) => {
     const user = useRecoilValue(userState(userId))
+    const weather = useRecoilValue(weatherState(userId))
+
     if (!user) return null
 
     return (
@@ -28,6 +39,9 @@ const UserData = ({userId}: {userId: number}) => {
             </Text>
             <Text>
                 <b>Phone:</b> {user.phone}
+            </Text>
+            <Text>
+                <b>Weather in {user.address.city}:</b> {weather}ºC
             </Text>
         </div>
     )
