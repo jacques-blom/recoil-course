@@ -4,7 +4,7 @@ import _ from 'lodash'
 import {selectorFamily, useRecoilState, useRecoilValue} from 'recoil'
 import {elementState, selectedElementState} from './components/Rectangle/Rectangle'
 
-const editProperty = selectorFamily<number, {path: string; id: number}>({
+export const editProperty = selectorFamily<any, {path: string; id: number}>({
     key: 'editProperty',
 
     get: ({path, id}) => ({get}) => {
