@@ -3,7 +3,7 @@ import {useEffect} from 'react'
 import {selectorFamily, useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil'
 import {editProperty} from '../../EditProperties'
 import {getBorderColor, getImageDimensions} from '../../util'
-import {elementState} from './Rectangle'
+import {Element, elementState} from './Rectangle'
 
 const imageSizeState = selectorFamily({
     key: 'imageSize',
@@ -16,7 +16,7 @@ const imageSizeState = selectorFamily({
 export const RectangleInner = ({selected, id}: {selected: boolean; id: number}) => {
     const element = useRecoilValue(elementState(id))
     const imageSize = useRecoilValue(imageSizeState(element.image?.src))
-    const setSize = useSetRecoilState(editProperty({id, path: 'style.size'}))
+    const setSize = useSetRecoilState<Element['style']['size']>(editProperty({id, path: 'style.size'}))
 
     useEffect(() => {
         if (imageSize) setSize(imageSize)

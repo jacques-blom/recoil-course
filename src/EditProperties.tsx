@@ -49,7 +49,7 @@ const Section: React.FC<{heading: string}> = ({heading, children}) => {
 }
 
 const Property = ({label, path, id}: {label: string; path: string; id: number}) => {
-    const [value, setValue] = useRecoilState(editProperty({path, id}))
+    const [value, setValue] = useRecoilState<number>(editProperty({path, id}))
 
     return (
         <div>
