@@ -1,6 +1,8 @@
 import {Icon, IconButton, VStack} from '@chakra-ui/react'
-import {Square} from 'react-feather'
-import {atom, useSetRecoilState} from 'recoil'
+import {Image, Square} from 'react-feather'
+import {atom, useRecoilCallback, useRecoilValue, useSetRecoilState} from 'recoil'
+import {defaultStyle, elementState} from './components/Rectangle/Rectangle'
+import {getRandomImage} from './util'
 
 export const elementsState = atom<number[]>({
     key: 'elements',
@@ -8,7 +10,22 @@ export const elementsState = atom<number[]>({
 })
 
 export const Toolbar = () => {
-    const setElements = useSetRecoilState(elementsState)
+    const elements = useRecoilValue(elementsState)
+    const newId = elements.length
+
+    const insertElement = useRecoilCallback(
+        ({set}) => (type: 'rectangle' | 'image') => {
+            set(elementsState, (e) => [...e, e.length])
+
+            if (type === 'image') {
+                set(elementState(newId), {
+                    style: defaultStyle,
+                    image: getRandomImage(),
+                })
+            }
+        },
+        [newId],
+    )
 
     return (
         <VStack
@@ -22,9 +39,14 @@ export const Toolbar = () => {
             spacing={2}
         >
             <IconButton
-                onClick={() => setElements((e) => [...e, e.length])}
+                onClick={() => insertElement('rectangle')}
                 aria-label="Add rectangle"
                 icon={<Icon style={{width: 24, height: 24}} as={Square} />}
+            />
+            <IconButton
+                onClick={() => insertElement('image')}
+                aria-label="Add image"
+                icon={<Icon style={{width: 24, height: 24}} as={Image} />}
             />
         </VStack>
     )

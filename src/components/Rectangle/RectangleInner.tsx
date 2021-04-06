@@ -1,7 +1,27 @@
 import {Box} from '@chakra-ui/react'
-import {getBorderColor} from '../../util'
+import {useEffect} from 'react'
+import {selectorFamily, useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil'
+import {editProperty} from '../../EditProperties'
+import {getBorderColor, getImageDimensions} from '../../util'
+import {elementState} from './Rectangle'
 
-export const RectangleInner = ({selected}: {selected: boolean}) => {
+const imageSizeState = selectorFamily({
+    key: 'imageSize',
+    get: (src?: string) => () => {
+        if (!src) return
+        return getImageDimensions(src)
+    },
+})
+
+export const RectangleInner = ({selected, id}: {selected: boolean; id: number}) => {
+    const element = useRecoilValue(elementState(id))
+    const imageSize = useRecoilValue(imageSizeState(element.image?.src))
+    const setSize = useSetRecoilState(editProperty({id, path: 'style.size'}))
+
+    useEffect(() => {
+        if (imageSize) setSize(imageSize)
+    }, [imageSize, setSize])
+
     return (
         <Box
             position="absolute"
@@ -17,6 +37,8 @@ export const RectangleInner = ({selected}: {selected: boolean}) => {
                 border="3px dashed #101010"
                 borderRadius="255px 15px 225px 15px/15px 225px 15px 255px"
                 backgroundColor="white"
+                backgroundImage={`url('${element.image?.src}')`}
+                backgroundSize="cover"
             />
         </Box>
     )
