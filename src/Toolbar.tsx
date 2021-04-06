@@ -1,5 +1,5 @@
 import {Icon, IconButton, VStack} from '@chakra-ui/react'
-import {Image, Square} from 'react-feather'
+import {GitHub, Image, Square} from 'react-feather'
 import {atom, useRecoilCallback, useRecoilValue, useSetRecoilState} from 'recoil'
 import {defaultStyle, elementState} from './components/Rectangle/Rectangle'
 import {getRandomImage} from './util'
@@ -47,6 +47,12 @@ export const Toolbar = () => {
                 onClick={() => insertElement('image')}
                 aria-label="Add image"
                 icon={<Icon style={{width: 24, height: 24}} as={Image} />}
+            />
+            <IconButton
+                as="a"
+                aria-label="View on GitHub"
+                icon={<Icon style={{width: 24, height: 24}} as={GitHub} />}
+                href="https://github.com/jacques-blom/recoil-course"
             />
         </VStack>
     )
