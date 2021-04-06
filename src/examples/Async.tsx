@@ -49,11 +49,12 @@ const useRefreshWeather = (userId: number) => {
 
 const weatherState = selectorFamily({
     key: 'weather',
-    get: (userId: number) => ({get}) => {
+    get: (userId: number) => async ({get}) => {
         get(weatherFetchIdState(userId))
 
         const user = get(userState(userId))
-        return getWeather(user.address.city)
+        const weather = await getWeather(user.address.city)
+        return weather
     },
 })
 
