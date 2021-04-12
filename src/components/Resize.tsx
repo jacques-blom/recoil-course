@@ -43,7 +43,7 @@ export const Resize: React.FC<ResizeProps> = ({selected, children, position, siz
                     <Handle placement={placement} visible={selected} />
                 </div>
             )}
-            lockAspectRatio
+            lockAspectRatio={lockAspectRatio}
         >
             <div>{children}</div>
         </Resizable>
