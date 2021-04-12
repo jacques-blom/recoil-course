@@ -31,6 +31,12 @@ const editSize = selectorFamily<any, {dimension: 'width' | 'height'; id: number}
     },
 
     set: ({dimension, id}) => ({get, set}, newValue) => {
+        const hasImage = get(editProperty({path: 'image', id})) !== undefined
+        if (!hasImage) {
+            set(editProperty({path: `style.size.${dimension}`, id}), newValue)
+            return
+        }
+
         const {width, height} = get(editProperty({path: 'style.size', id}))
         const aspectRatio = width / height
 
