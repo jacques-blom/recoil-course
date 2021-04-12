@@ -23,6 +23,31 @@ export const editProperty = selectorFamily<any, {path: string; id: number}>({
     },
 })
 
+const editSize = selectorFamily<any, {dimension: 'width' | 'height'; id: number}>({
+    key: 'editSize',
+
+    get: ({dimension, id}) => ({get}) => {
+        return get(editProperty({path: `style.size.${dimension}`, id}))
+    },
+
+    set: ({dimension, id}) => ({get, set}, newValue) => {
+        const {width, height} = get(editProperty({path: 'style.size', id}))
+        const aspectRatio = width / height
+
+        if (dimension === 'width') {
+            set(editProperty({path: 'style.size', id}), {
+                width: newValue,
+                height: Math.round(newValue / aspectRatio),
+            })
+        } else {
+            set(editProperty({path: 'style.size', id}), {
+                height: newValue,
+                width: Math.round(newValue * aspectRatio),
+            })
+        }
+    },
+})
+
 export const hasImageState = selector({
     key: 'hasImage',
     get: ({get}) => {
@@ -44,8 +69,8 @@ export const EditProperties = () => {
                 <Property label="Left" path="style.position.left" id={selectedElement} />
             </Section>
             <Section heading="Size">
-                <Property label="Width" path="style.size.width" id={selectedElement} />
-                <Property label="Height" path="style.size.height" id={selectedElement} />
+                <SizeProperty label="Width" dimension="width" id={selectedElement} />
+                <SizeProperty label="Height" dimension="height" id={selectedElement} />
             </Section>
             {hasImage && (
                 <Section heading="Image">
@@ -67,16 +92,24 @@ const Section: React.FC<{heading: string}> = ({heading, children}) => {
     )
 }
 
+const SizeProperty = ({label, dimension, id}: {label: string; dimension: 'width' | 'height'; id: number}) => {
+    const [value, setValue] = useRecoilState<number>(editSize({dimension, id}))
+    return <PropertyInput label={label} value={value} onChange={setValue} />
+}
+
 const Property = ({label, path, id}: {label: string; path: string; id: number}) => {
     const [value, setValue] = useRecoilState<number>(editProperty({path, id}))
+    return <PropertyInput label={label} value={value} onChange={setValue} />
+}
 
+const PropertyInput = ({label, value, onChange}: {label: string; value: number; onChange: (value: number) => void}) => {
     return (
         <div>
             <Text fontSize="14px" fontWeight="500" mb="2px">
                 {label}
             </Text>
             <InputGroup size="sm" variant="filled">
-                <NumberInput value={value} onChange={(_, value) => setValue(value)}>
+                <NumberInput value={value} onChange={(_, value) => onChange(value)}>
                     <NumberInputField borderRadius="md" />
                     <InputRightElement pointerEvents="none" children="px" lineHeight="1" fontSize="12px" />
                 </NumberInput>
