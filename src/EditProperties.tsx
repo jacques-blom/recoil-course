@@ -58,7 +58,7 @@ export const hasImageState = selector({
     key: 'hasImage',
     get: ({get}) => {
         const id = get(selectedElementState)
-        if (!id) return false
+        if (id == null) return false
         return get(elementState(id)).image !== undefined
     },
 })
