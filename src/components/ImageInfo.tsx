@@ -8,7 +8,7 @@ const imageIdState = selector({
     key: 'imageId',
     get: ({get}) => {
         const id = get(selectedElementState)
-        if (!id) return
+        if (id == null) return
         return get(elementState(id)).image?.id
     },
 })
@@ -17,7 +17,7 @@ const imageInfoState = selector({
     key: 'imageInfo',
     get: ({get}) => {
         const imageId = get(imageIdState)
-        if (!imageId) return
+        if (imageId == null) return
         return callApi('image-details', {queryParams: {seed: imageId}})
     },
 })
