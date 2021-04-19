@@ -1,63 +1,64 @@
 import {Button} from '@chakra-ui/button'
 import {Input} from '@chakra-ui/input'
 import {Box, Divider, Heading, VStack} from '@chakra-ui/layout'
-import produce from 'immer'
 import React, {useState} from 'react'
-import {atom, DefaultValue, useRecoilState, useResetRecoilState} from 'recoil'
+import {
+    atom,
+    AtomEffect,
+    atomFamily,
+    DefaultValue,
+    useRecoilCallback,
+    useRecoilState,
+    useRecoilValue,
+    useResetRecoilState,
+} from 'recoil'
 
 type ItemType = {
     label: string
     checked: boolean
 }
 
-const shoppingListState = atom<ItemType[]>({
-    key: 'shoppingList',
-    default: [],
-    effects_UNSTABLE: [
-        ({onSet, setSelf}) => {
-            const storedItems = localStorage.getItem('shoppingList')
-            if (storedItems != null) {
-                setSelf(JSON.parse(storedItems))
-            }
+const localPersist: AtomEffect<any> = ({onSet, setSelf, node}) => {
+    const storedItems = localStorage.getItem(node.key)
+    if (storedItems != null) {
+        setSelf(JSON.parse(storedItems))
+    }
 
-            onSet((newItems) => {
-                if (newItems instanceof DefaultValue) {
-                    localStorage.removeItem('shoppingList')
-                } else {
-                    localStorage.setItem('shoppingList', JSON.stringify(newItems))
-                }
-            })
-        },
-    ],
+    onSet((newItems) => {
+        if (newItems instanceof DefaultValue) {
+            localStorage.removeItem(node.key)
+        } else {
+            localStorage.setItem(node.key, JSON.stringify(newItems))
+        }
+    })
+}
+
+const idsState = atom<number[]>({
+    key: 'ids',
+    default: [],
+    effects_UNSTABLE: [localPersist],
+})
+
+const itemState = atomFamily<ItemType, number>({
+    key: 'item',
+    default: {label: '', checked: false},
+    effects_UNSTABLE: [localPersist],
 })
 
 export const AtomEffects = () => {
-    const [items, setItems] = useRecoilState(shoppingListState)
-    const resetList = useResetRecoilState(shoppingListState)
+    const ids = useRecoilValue(idsState)
+    const resetList = useResetRecoilState(idsState)
+    const nextId = ids.length
 
-    const toggleItem = (index: number) => {
-        setItems(
-            produce(items, (draftItems) => {
-                draftItems[index].checked = !draftItems[index].checked
-            }),
-        )
-    }
-
-    const insertItem = (label: string) => {
-        setItems([...items, {label, checked: false}])
-    }
+    const insertItem = useRecoilCallback(({set}) => (label: string) => {
+        set(idsState, [...ids, nextId])
+        set(itemState(nextId), {label, checked: false})
+    })
 
     return (
         <Container onClear={() => resetList()}>
-            {items.map((item, index) => (
-                <Item
-                    key={item.label}
-                    label={item.label}
-                    checked={item.checked}
-                    onClick={() => {
-                        toggleItem(index)
-                    }}
-                />
+            {ids.map((id) => (
+                <Item key={id} id={id} />
             ))}
             <NewItemInput
                 onInsert={(label) => {
@@ -87,23 +88,23 @@ const Container: React.FC<{onClear: () => void}> = ({children, onClear}) => {
 }
 
 type ItemProps = {
-    label: string
-    checked: boolean
-    onClick: () => void
+    id: number
 }
 
-const Item = ({label, checked, onClick}: ItemProps) => {
+const Item = ({id}: ItemProps) => {
+    const [item, setItem] = useRecoilState(itemState(id))
+
     return (
         <Box
             rounded="md"
-            textDecoration={checked ? 'line-through' : ''}
-            opacity={checked ? 0.5 : 1}
+            textDecoration={item.checked ? 'line-through' : ''}
+            opacity={item.checked ? 0.5 : 1}
             _hover={{textDecoration: 'line-through'}}
             cursor="pointer"
             width="100%"
-            onClick={onClick}
+            onClick={() => setItem({...item, checked: !item.checked})}
         >
-            {label}
+            {item.label}
         </Box>
     )
 }
