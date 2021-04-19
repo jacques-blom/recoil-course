@@ -1,6 +1,6 @@
 import {Icon, IconButton, VStack} from '@chakra-ui/react'
 import {Image, Square} from 'react-feather'
-import {atom, useRecoilCallback, useRecoilValue, useSetRecoilState} from 'recoil'
+import {atom, useRecoilCallback, useRecoilValue} from 'recoil'
 import {defaultStyle, elementState} from './components/Rectangle/Rectangle'
 import {getRandomImage} from './util'
 

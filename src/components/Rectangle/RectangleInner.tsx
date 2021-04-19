@@ -1,6 +1,6 @@
 import {Box} from '@chakra-ui/react'
 import {useEffect} from 'react'
-import {selectorFamily, useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil'
+import {selectorFamily, useRecoilValue, useSetRecoilState} from 'recoil'
 import {editProperty} from '../../EditProperties'
 import {getBorderColor, getImageDimensions} from '../../util'
 import {Element, elementState} from './Rectangle'
