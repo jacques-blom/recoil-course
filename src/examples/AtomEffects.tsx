@@ -4,7 +4,6 @@ import {Box, Divider, Heading, VStack} from '@chakra-ui/layout'
 import React, {useState} from 'react'
 import {
     atom,
-    AtomEffect,
     atomFamily,
     DefaultValue,
     useRecoilCallback,
@@ -12,37 +11,49 @@ import {
     useRecoilValue,
     useResetRecoilState,
 } from 'recoil'
+import {shoppingListAPI} from './fakeAPI'
 
 type ItemType = {
     label: string
     checked: boolean
 }
 
-const localPersist: AtomEffect<any> = ({onSet, setSelf, node}) => {
-    const storedItems = localStorage.getItem(node.key)
-    if (storedItems != null) {
-        setSelf(JSON.parse(storedItems))
-    }
-
-    onSet((newItems) => {
-        if (newItems instanceof DefaultValue) {
-            localStorage.removeItem(node.key)
-        } else {
-            localStorage.setItem(node.key, JSON.stringify(newItems))
-        }
-    })
-}
-
 const idsState = atom<number[]>({
     key: 'ids',
     default: [],
-    effects_UNSTABLE: [localPersist],
+    effects_UNSTABLE: [
+        ({setSelf}) => {
+            const idsPromise = shoppingListAPI.getItems().then((items) => {
+                return Object.keys(items).map((id) => parseInt(id))
+            })
+
+            setSelf(idsPromise)
+        },
+    ],
 })
 
 const itemState = atomFamily<ItemType, number>({
     key: 'item',
     default: {label: '', checked: false},
-    effects_UNSTABLE: [localPersist],
+    effects_UNSTABLE: (id) => [
+        ({onSet, setSelf, trigger}) => {
+            if (trigger === 'get') {
+                const itemPromise = shoppingListAPI.getItem(id).then((item) => {
+                    if (item) return item
+                    return new DefaultValue()
+                })
+                setSelf(itemPromise)
+            }
+
+            onSet((newItem) => {
+                if (newItem instanceof DefaultValue) {
+                    shoppingListAPI.deleteItem(id)
+                } else {
+                    shoppingListAPI.createOrUpdateItem(id, newItem)
+                }
+            })
+        },
+    ],
 })
 
 export const AtomEffects = () => {

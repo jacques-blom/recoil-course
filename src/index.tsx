@@ -28,7 +28,9 @@ ReactDOM.render(
                             </Suspense>
                         </Route>
                         <Route path="/examples/atomEffects">
-                            <AtomEffects />
+                            <Suspense fallback={<div>Loading...</div>}>
+                                <AtomEffects />
+                            </Suspense>
                         </Route>
                         <Route>
                             <Canvas />
