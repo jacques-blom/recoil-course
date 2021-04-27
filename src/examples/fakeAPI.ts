@@ -40,29 +40,33 @@ class ShoppingListAPI {
     }
 
     async getItems() {
-        console.log('Fake API Request: getItems')
-        await randomDelay()
+        await this.randomDelay('getItems')
         return this.items
     }
 
     async getItem(id: number): Promise<ItemType | undefined> {
-        console.log('Fake API Request: getItem')
-        await randomDelay()
+        await this.randomDelay('getItem', id)
         return this.items[id]
     }
 
     async createOrUpdateItem(id: number, item: ItemType) {
-        console.log('Fake API Request: createOrUpdateItem')
-        await randomDelay()
+        await this.randomDelay('createOrUpdateItem', id)
         this.items[id] = item
         this.persist()
     }
 
     async deleteItem(id: number) {
-        console.log('Fake API Request: deleteItem')
-        await randomDelay()
+        await this.randomDelay('deleteItem', id)
         delete this.items[id]
         this.persist()
+    }
+
+    private async randomDelay(name: string, param?: number) {
+        let label = `Fake Request: ${name}.`
+        if (param != null) label += ` id: ${param}`
+
+        await randomDelay()
+        console.log(`End ${label}`)
     }
 
     private persist() {
