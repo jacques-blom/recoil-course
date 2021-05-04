@@ -18,12 +18,25 @@ type ItemType = {
     checked: boolean
 }
 
+let cachedItems: Record<string, ItemType> | undefined
+const getItems = async () => {
+    if (cachedItems) return cachedItems
+
+    cachedItems = await shoppingListAPI.getItems()
+    return cachedItems
+}
+
+const getItem = async (id: number) => {
+    const items = await getItems()
+    return items[id]
+}
+
 const idsState = atom<number[]>({
     key: 'ids',
     default: [],
     effects_UNSTABLE: [
         ({setSelf}) => {
-            const itemsPromise = shoppingListAPI.getItems().then((items) => {
+            const itemsPromise = getItems().then((items) => {
                 return Object.keys(items).map((id) => parseInt(id))
             })
             setSelf(itemsPromise)
@@ -36,7 +49,7 @@ const itemState = atomFamily<ItemType, number>({
     default: {label: '', checked: false},
     effects_UNSTABLE: (id) => [
         ({onSet, setSelf}) => {
-            const itemPromise = shoppingListAPI.getItem(id).then((item) => {
+            const itemPromise = getItem(id).then((item) => {
                 if (item === undefined) return new DefaultValue()
                 else return item
             })
